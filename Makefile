@@ -6,7 +6,7 @@
 #    By: behamon <behamon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/03 12:33:09 by behamon           #+#    #+#              #
-#    Updated: 2016/12/03 13:05:46 by behamon          ###   ########.fr        #
+#    Updated: 2016/12/05 19:06:35 by behamon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,13 +24,15 @@ FLAGS = -Wall -Werror -Wextra -O3
 MLX_FLAGS = -framework OpenGL -framework AppKit -lmlx
 
 LFT_PATH = ./libft/
+MLX_PATH = ./mlx/
 
-SRC = parse_map.c draw_fdf.c utilities_fdf.c
+SRC = parse_map.c draw_fdf.c utilities_fdf.c hud.c
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C $(LFT_PATH)
+	@make -C $(MLX_PATH)
 	@$(CC) $(FLAGS) -o $(NAME) $(SRC) $(MLX_FLAGS) -L$(LFT_PATH) -lft
 	@echo "$(OKC)FDF:\t\tCompilation.. \tPrêt$(NOC)"
 
