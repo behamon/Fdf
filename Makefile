@@ -6,7 +6,7 @@
 #    By: behamon <behamon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/03 12:33:09 by behamon           #+#    #+#              #
-#    Updated: 2016/12/05 19:06:35 by behamon          ###   ########.fr        #
+#    Updated: 2016/12/05 19:08:04 by behamon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ $(NAME): $(OBJ)
 
 clean:
 	@make -C $(LFT_PATH) clean
+	@make -C $(MLX_PATH) clean
 	@rm -rf $(OBJ_PATH)
 	@echo "$(WAC)FDF:\t\tSuppression du dossier objet :\t./obj/$(NOC)"
 
