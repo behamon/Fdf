@@ -6,13 +6,13 @@
 /*   By: behamon <behamon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/03 14:53:04 by behamon           #+#    #+#             */
-/*   Updated: 2016/12/05 19:06:01 by behamon          ###   ########.fr       */
+/*   Updated: 2016/12/08 17:33:28 by behamon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		draw_line(t_env *e, int x, int y)
+static int		draw_line(t_env *e, int x, int y)
 {
 	double	dx;
 	double	dy;
@@ -37,7 +37,7 @@ int		draw_line(t_env *e, int x, int y)
 	return (0);
 }
 
-void	set_coordinates(t_env *e, int x, int y, int bas)
+static void		set_coordinates(t_env *e, int x, int y, int bas)
 {
 	int		xt;
 	int		yt;
@@ -65,16 +65,16 @@ void	set_coordinates(t_env *e, int x, int y, int bas)
 	e->y2 += WIDTH / 2 - 250;
 }
 
-void	draw_map(t_env *e)
+static void		draw_map(t_env *e)
 {
 	size_t	x;
 	size_t	y;
 
 	x = 0;
 	y = 0;
-	while (y++ != e->y_max)
+	while (y++ != e->y_max && e->map[y][x] != TAB_STOP)
 	{
-		while (x++ != e->x_max)
+		while (x++ != e->x_max && e->map[y][x] != TAB_STOP)
 		{
 			if (x + 1 < e->x_max && e->map[y][x] != TAB_STOP
 					&& e->map[y][x + 1] != TAB_STOP)
@@ -93,7 +93,7 @@ void	draw_map(t_env *e)
 	}
 }
 
-int		image_operations(t_env *e)
+static int		image_operations(t_env *e)
 {
 	int		bpp;
 	int		size_line;
@@ -109,7 +109,7 @@ int		image_operations(t_env *e)
 	return (0);
 }
 
-int		fdf_init(int **map, size_t y_max)
+int				fdf_init(int **map, size_t y_max)
 {
 	t_env	*e;
 

@@ -5,68 +5,70 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: behamon <behamon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/17 12:01:13 by behamon           #+#    #+#             */
-/*   Updated: 2016/11/24 13:37:56 by behamon          ###   ########.fr       */
+/*   Created: 2016/12/07 15:09:07 by behamon           #+#    #+#             */
+/*   Updated: 2016/12/15 14:59:22 by behamon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-static int	read_and_update(const int fd, char **str)
+static int				text_copy(int const fd, char **line)
 {
-	char		buf[BUFF_SIZE + 1];
-	char		*tmp;
-	int			ret;
+	int				ret;
+	char			*tmp;
+	char			buffer[BUFF_SIZE + 1];
 
-	if ((ret = read(fd, buf, BUFF_SIZE)) < 0)
-		return (-1);
-	buf[ret] = '\0';
-	if (ret > 0)
+	ret = -2;
+	tmp = NULL;
+	while ((!ft_strchr(*line, EOL)))
 	{
-		if (!(tmp = ft_strjoin(*str, buf)))
-			return (-1);
-		free(*str);
-		*str = tmp;
+		if ((ret = read(fd, buffer, BUFF_SIZE)) <= 0)
+			return (ret);
+		tmp = *line;
+		buffer[ret] = 0;
+		if (!(*line = ft_strjoin(*line, buffer)))
+			return (ERROR);
+		ft_strdel(&tmp);
+		if (ret < BUFF_SIZE)
+			return (ret);
 	}
 	return (ret);
 }
 
-static int	fill_and_move(char **line, char **endl_pos, char **str)
+static char				*get_line(char *offset, char **line)
 {
-	*line = ft_strsub(*str, 0, *endl_pos - *str);
-	*endl_pos = ft_strdup(*endl_pos + 1);
-	free(*str);
-	*str = *endl_pos;
-	return (1);
+	char			*tmp;
+	char			*del;
+
+	del = offset;
+	if (offset && (tmp = ft_strchr(offset, EOL)))
+	{
+		*line = ft_strsub(offset, 0, ft_strlen(offset) - ft_strlen(tmp));
+		offset = ft_strdup(tmp + 1);
+		ft_strdel(&del);
+	}
+	else
+	{
+		*line = ft_strdup(offset);
+		ft_strclr(offset);
+	}
+	return (offset);
 }
 
-int			get_next_line(const int fd, char **line)
+int						get_next_line(int const fd, char **line)
 {
-	static char	*str;
-	int			ret;
-	char		*endl_pos;
+	int				ret;
+	static char		*offset;
 
-	if (fd < 0 || !line)
-		return (-1);
-	if (!str)
-		str = ft_strnew(0);
-	endl_pos = ft_strchr(str, '\n');
-	while (endl_pos == NULL)
-	{
-		if ((ret = read_and_update(fd, &str)) == 0)
-		{
-			if ((endl_pos = ft_strchr(str, '\0')) == str)
-			{
-				*line = NULL;
-				return (0);
-			}
-		}
-		else if (ret == -1)
-			return (-1);
-		else
-			endl_pos = ft_strchr(str, '\n');
-	}
-	return (fill_and_move(line, &endl_pos, &str));
+	if (!line)
+		return (ERROR);
+	if (!offset)
+		offset = ft_strnew(0);
+	if ((ret = text_copy(fd, &offset)) == ERROR)
+		return (ERROR);
+	offset = get_line(offset, line);
+	if ((!ret && !ft_strlen(offset) && !ft_strlen(*line)))
+		return (0);
+	else
+		return (1);
 }

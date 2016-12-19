@@ -5,28 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: behamon <behamon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/17 11:55:41 by behamon           #+#    #+#             */
-/*   Updated: 2016/11/27 18:51:24 by behamon          ###   ########.fr       */
+/*   Created: 2016/12/07 15:09:22 by behamon           #+#    #+#             */
+/*   Updated: 2016/12/15 14:59:39 by behamon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include "libft.h"
-# include <stdlib.h>
-# include <sys/types.h>
-# include <sys/uio.h>
+# define EOL '\n'
+# define TRUE 1
+# define FALSE 0
+# define ERROR -1
+# define BUFF_SIZE 256
+# include "./libft.h"
 # include <unistd.h>
+# include <stdlib.h>
 
-# define BUFF_SIZE 32
-
-typedef struct	s_data
-{
-	char	*str;
-	int		fd;
-}				t_data;
-
-int				get_next_line(const int fd, char **line);
+int		get_next_line(const int fd, char **line);
 
 #endif

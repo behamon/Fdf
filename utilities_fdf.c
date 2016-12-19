@@ -6,7 +6,7 @@
 /*   By: behamon <behamon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/29 11:45:58 by behamon           #+#    #+#             */
-/*   Updated: 2016/12/05 18:19:50 by behamon          ###   ########.fr       */
+/*   Updated: 2016/12/10 00:11:09 by behamon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		get_color(t_env *e, int x, int y)
 		return (1);
 	else if (e->map[y][x] > 0 && e->map[y][x] <= 30)
 		return (2);
-	else if (e->map[y][x] >= 21 && e->map[y][x] <= 100)
+	else if (e->map[y][x] >= 31 && e->map[y][x] <= 110)
 		return (3);
 	else
 		return (4);
@@ -97,14 +97,18 @@ size_t	x_len(int **map, size_t y_max)
 	i = 0;
 	j = 0;
 	len = 0;
-	while (i < y_max)
+	while (map[i][j] != TAB_STOP)
+		j++;
+	len = j;
+	j = 0;
+	while (i < y_max - 1)
 	{
 		while (map[i][j] != TAB_STOP)
 			j++;
-		if (j > len)
-			len = j - 1;
+		if (j != len)
+			return (0);
 		j = 0;
 		i++;
 	}
-	return (len + 1);
+	return (len);
 }
